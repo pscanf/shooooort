@@ -1,6 +1,9 @@
-[![Build Status](https://travis-ci.org/staticdeploy/sd-app.svg?branch=master)](https://travis-ci.org/staticdeploy/sd-app)
+[![Build Status](https://travis-ci.org/pscanf/shooooort.svg?branch=master)](https://travis-ci.org/pscanf/shooooort)
+[![coverage](https://codecov.io/github/pscanf/shooooort/coverage.svg?branch=master)](https://codecov.io/github/pscanf/shooooort?branch=master)
+[![dependencies](https://david-dm.org/pscanf/shooooort.svg)](https://david-dm.org/pscanf/shooooort)
+[![devDependencies](https://david-dm.org/pscanf/shooooort/dev-status.svg)](https://david-dm.org/pscanf/shooooort#info=devDependencies)
 
-# sd-app
+# shooooort
 
 ## Development environment setup
 
@@ -14,5 +17,4 @@ file will become available in the `window.APP_CONFIG` object (provided
 `/app-config.js` is included in the `app/main.html` source file).
 
 Configuration options:
-- `AUTH0_CLIENT_ID`
-- `AUTH0_DOMAIN`
+- `API_URL`

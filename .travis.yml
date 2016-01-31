@@ -4,8 +4,9 @@ node_js:
   - 5
 
 install:
-  - npm install --no-optional
+  - npm install
 
 script:
   - npm run lint
-  - npm test
+  - npm run coverage
+  - npm run codecov

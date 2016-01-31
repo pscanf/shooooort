@@ -8,14 +8,23 @@
     "js": [
         "axios",
         "babel-polyfill",
+        "bluebird",
+        "copy-to-clipboard",
+        "halogen",
+        "moment",
+        "radium",
         "ramda",
         "react",
+        "react-addons-linked-state-mixin",
         "react-dom",
         "react-redux",
         "react-router",
-        "redux",
-        "redux-thunk",
         "react-router-redux",
-        "redux-logger"
+        "redux",
+        "redux-logger",
+        "redux-simple-router",
+        "redux-thunk",
+        "tcomb-react",
+        "validator"
     ]
 }
