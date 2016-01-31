@@ -1,0 +1,21 @@
+{
+    "css": [
+        "node_modules/font-awesome/css/font-awesome.css"
+    ],
+    "fonts": [
+        "node_modules/font-awesome/fonts/*"
+    ],
+    "js": [
+        "axios",
+        "babel-polyfill",
+        "ramda",
+        "react",
+        "react-dom",
+        "react-redux",
+        "react-router",
+        "redux",
+        "redux-thunk",
+        "react-router-redux",
+        "redux-logger"
+    ]
+}
