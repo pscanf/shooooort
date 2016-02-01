@@ -1,4 +1,4 @@
-import {browserHistory} from "react-router";
+import {hashHistory} from "react-router";
 import {syncHistory} from "react-router-redux";
 import {applyMiddleware, compose, createStore} from "redux";
 import logger from "redux-logger";
@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 
 import rootReducer from "reducers";
 
-const reduxRouterMiddleware = syncHistory(browserHistory);
+const reduxRouterMiddleware = syncHistory(hashHistory);
 
 const middleware = applyMiddleware(
     reduxRouterMiddleware,
