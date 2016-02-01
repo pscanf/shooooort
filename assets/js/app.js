@@ -32,7 +32,7 @@ webpackJsonp([0],{
 	    { store: _store2.default },
 	    _react2.default.createElement(
 	        _reactRouter.Router,
-	        { history: _reactRouter.browserHistory },
+	        { history: _reactRouter.hashHistory },
 	        _routes2.default
 	    )
 	);
@@ -1024,7 +1024,7 @@ webpackJsonp([0],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var reduxRouterMiddleware = (0, _reactRouterRedux.syncHistory)(_reactRouter.browserHistory);
+	var reduxRouterMiddleware = (0, _reactRouterRedux.syncHistory)(_reactRouter.hashHistory);
 	
 	var middleware = (0, _redux.applyMiddleware)(reduxRouterMiddleware, _reduxThunk2.default, (0, _reduxLogger2.default)({ collapsed: true }));
 	
