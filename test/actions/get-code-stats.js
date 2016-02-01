@@ -9,6 +9,7 @@ import {
     GET_CODE_STATS_SUCCESS,
     GET_CODE_STATS_ERROR
 } from "actions/get-code-stats";
+import {AxiosError} from "lib/axios";
 
 chai.use(sinonChai);
 
@@ -71,11 +72,13 @@ describe("actions/get-code-stats", () => {
         });
 
         it("dispatches a GET_CODE_STATS_ERROR action on stats request error", async () => {
-            axios.get = sinon.stub().returns(reject({}));
+            axios.get = sinon.stub().returns(reject(
+                new AxiosError()
+            ));
             await getCodeStats("codeId")(dispatch);
             expect(dispatch).to.have.been.calledWith({
                 type: GET_CODE_STATS_ERROR,
-                payload: {},
+                payload: new AxiosError(),
                 error: true,
                 meta: {
                     code: "codeId"

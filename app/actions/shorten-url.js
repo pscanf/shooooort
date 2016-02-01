@@ -1,5 +1,5 @@
 import {resolve} from "bluebird";
-import axios from "lib/axios";
+import axios, {AxiosError} from "lib/axios";
 
 import {insert} from "lib/codes-collection";
 
@@ -24,19 +24,25 @@ export default function shortenUrl (url) {
             })
             .catch(err => {
                 /*
-                *   We want to dispatch a SHORTEN_URL_ERROR action only when
-                *   `axios.post` fails. If the error occurred while dispatching,
-                *   we only rethrow it to be logged in the final catch.
-                *   Since errors thrown by axios are not Error instances, we can
-                *   use that fact to discriminate between axios errors and
-                *   dispatch errors.
+                *   We want to dispatch a GET_CODE_STATS_ERROR action only when
+                *   `axios.post` fails (the error is an AxiosError). In all
+                *   other cases we rethrow the error.
                 */
-                if (err instanceof Error) {
+                if (err instanceof AxiosError) {
+                    dispatch({
+                        type: SHORTEN_URL_ERROR,
+                        payload: err,
+                        error: true
+                    });
+                } else {
                     throw err;
                 }
-                dispatch({type: SHORTEN_URL_ERROR, payload: err, error: true});
             })
             .catch(err => {
+                /*
+                *   We cannot recover from a dispatch error. Therefore we
+                *   only log it.
+                */
                 console.error(err);
             });
     };

@@ -1,3 +1,4 @@
+import {reject, resolve} from "bluebird";
 import chai, {expect} from "chai";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -8,6 +9,7 @@ import {
     SHORTEN_URL_SUCCESS,
     SHORTEN_URL_ERROR
 } from "actions/shorten-url";
+import {AxiosError} from "lib/axios";
 
 chai.use(sinonChai);
 
@@ -30,11 +32,11 @@ describe("actions/shorten-url", () => {
             console.error.restore();
         });
         beforeEach(() => {
-            axios.post = sinon.stub().returns({
+            axios.post = sinon.stub().returns(resolve({
                 data: {
                     shortcode: "codeId"
                 }
-            });
+            }));
             dispatch.reset();
             insert.reset();
             console.error.reset();
@@ -76,11 +78,13 @@ describe("actions/shorten-url", () => {
         });
 
         it("dispatches a SHORTEN_URL_ERROR action on shorten request error", async () => {
-            axios.post = sinon.stub().throws({});
+            axios.post = sinon.stub().returns(reject(
+                new AxiosError()
+            ));
             await shortenUrl("url")(dispatch);
             expect(dispatch).to.have.been.calledWith({
                 type: SHORTEN_URL_ERROR,
-                payload: {},
+                payload: new AxiosError(),
                 error: true
             });
         });

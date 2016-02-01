@@ -1,6 +1,6 @@
 import {resolve} from "bluebird";
 
-import axios from "lib/axios";
+import axios, {AxiosError} from "lib/axios";
 
 export const GET_CODE_STATS_START = "GET_CODE_STATS_START";
 export const GET_CODE_STATS_SUCCESS = "GET_CODE_STATS_SUCCESS";
@@ -26,23 +26,25 @@ export default function getCodeStats (code) {
             .catch(err => {
                 /*
                 *   We want to dispatch a GET_CODE_STATS_ERROR action only when
-                *   `axios.get` fails. If the error occurred while dispatching,
-                *   we only rethrow it to be logged in the final catch.
-                *   Since errors thrown by axios are not Error instances, we can
-                *   use that fact to discriminate between axios errors and
-                *   dispatch errors.
+                *   `axios.get` fails (the error is an AxiosError). In all other
+                *   cases we rethrow the error.
                 */
-                if (err instanceof Error) {
+                if (err instanceof AxiosError) {
+                    dispatch({
+                        type: GET_CODE_STATS_ERROR,
+                        payload: err,
+                        error: true,
+                        meta: {code}
+                    });
+                } else {
                     throw err;
                 }
-                dispatch({
-                    type: GET_CODE_STATS_ERROR,
-                    payload: err,
-                    error: true,
-                    meta: {code}
-                });
             })
             .catch(err => {
+                /*
+                *   We cannot recover from a dispatch error. Therefore we
+                *   only log it.
+                */
                 console.error(err);
             });
     };
