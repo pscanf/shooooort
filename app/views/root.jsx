@@ -9,9 +9,10 @@ import colors from "lib/colors";
 const styleRules = {
     root: {
         body: {
+            margin: "0px",
             fontFamily: "roboto",
             fontWeight: 300,
-            margin: "0px",
+            fontSize: "16px",
             color: colors.primaryText
         }
     }

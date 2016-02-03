@@ -6,10 +6,12 @@ import {propTypes} from "tcomb-react";
 
 import {API_URL} from "config";
 import AsyncResultWrapper from "components/async-result-wrapper";
+import Spacer from "components/spacer";
 import {CodesCollection} from "lib/app-tcomb-types";
+import colors from "lib/colors";
 import {timeago} from "lib/utils";
 
-const styles = {
+const styleRules = {
     codeEntry: {
         ".code-entry .click-to-copy-button": {
             display: "none"
@@ -17,6 +19,57 @@ const styles = {
         ".code-entry:hover .click-to-copy-button": {
             display: "initial"
         }
+    }
+};
+const styles = {
+    listContainer: {
+        tableLayout: "fixed",
+        width: "100%",
+        cursor: "pointer"
+    },
+    baseHeadColumn: {
+        color: colors.unimportantText,
+        fontSize: "14px",
+        textTransform: "uppercase"
+    },
+    linkColumnHeader: {
+        textAlign: "left"
+    },
+    visitsHeadColumn: {
+        textAlign: "center",
+        width: "80px"
+    },
+    lastVisitedHeadColumn: {
+        textAlign: "center",
+        width: "120px"
+    },
+    codeEntryContainer: {
+        height: "60px"
+    },
+    shortUrlPrefix: {
+        fontWeight: 400
+    },
+    shortUrlCode: {
+        fontWeight: 400,
+        color: colors.accent
+    },
+    clickToCopyButton: {
+        float: "right",
+        color: colors.accent,
+        paddingRight: "30px"
+    },
+    fullUrl: {
+        color: colors.unimportantText,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        paddingRight: "30px"
+    },
+    visitsBodyColumn: {
+        textAlign: "center"
+    },
+    lastVisitedBodyColumn: {
+        textAlign: "center"
     }
 };
 
@@ -38,20 +91,29 @@ const CodesList = React.createClass({
                 className="code-entry"
                 key={code.code}
                 onClick={this.handleClick(code)}
+                style={styles.codeEntryContainer}
             >
-                <Style rules={styles.codeEntry} />
                 <td>
                     <div>
-                        <span>{"shooooort.com/"}</span>
-                        <span>{code.code}</span>
-                        {" "}
-                        <span className="click-to-copy-button">
+                        <span style={styles.shortUrlPrefix}>
+                            {"shooooort.com/"}
+                        </span>
+                        <span style={styles.shortUrlCode}>
+                            {code.code}
+                        </span>
+                        <span
+                            className="click-to-copy-button"
+                            style={styles.clickToCopyButton}
+                        >
                             {"Click to copy this link"}
                         </span>
                     </div>
-                    {code.url}
+                    <Spacer direction="v" size={2} />
+                    <div style={styles.fullUrl}>
+                        {code.url}
+                    </div>
                 </td>
-                <td>
+                <td style={styles.visitsBodyColumn}>
                     <AsyncResultWrapper
                         error={!!code.errorFetchingStats}
                         loading={code.fetchingStats}
@@ -61,7 +123,7 @@ const CodesList = React.createClass({
                         </span>
                     </AsyncResultWrapper>
                 </td>
-                <td>
+                <td style={styles.lastVisitedBodyColumn}>
                     <AsyncResultWrapper
                         error={!!code.errorFetchingStats}
                         loading={code.fetchingStats}
@@ -77,15 +139,22 @@ const CodesList = React.createClass({
 
     render () {
         return (
-            <table>
+            <table style={styles.listContainer}>
                 <thead>
                     <tr>
-                        <th>{"Link"}</th>
-                        <th>{"Visits"}</th>
-                        <th>{"Last visited"}</th>
+                        <th style={[styles.baseHeadColumn, styles.linkColumnHeader]}>
+                            {"link"}
+                        </th>
+                        <th style={[styles.baseHeadColumn, styles.visitsHeadColumn]}>
+                            {"visits"}
+                        </th>
+                        <th style={[styles.baseHeadColumn, styles.lastVisitedHeadColumn]}>
+                            {"last visited"}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
+                    <Style rules={styleRules.codeEntry} />
                     {values(this.props.codes).map(this.renderCodeEntry)}
                 </tbody>
             </table>
