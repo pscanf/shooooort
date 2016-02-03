@@ -7,6 +7,9 @@ export const SHORTEN_URL_START = "SHORTEN_URL_START";
 export const SHORTEN_URL_SUCCESS = "SHORTEN_URL_SUCCESS";
 export const SHORTEN_URL_ERROR = "SHORTEN_URL_ERROR";
 
+const AGING_TIME_IN_MS = 10 * 1000;
+export const SHORTENED_URL_AGED = "SHORTENED_URL_AGED";
+
 export default function shortenUrl (url) {
     return dispatch => {
         return resolve()
@@ -21,6 +24,11 @@ export default function shortenUrl (url) {
                 };
                 insert(code);
                 dispatch({type: SHORTEN_URL_SUCCESS, payload: code});
+                return code;
+            })
+            .delay(AGING_TIME_IN_MS)
+            .then(code => {
+                dispatch({type: SHORTENED_URL_AGED, payload: code});
             })
             .catch(err => {
                 /*

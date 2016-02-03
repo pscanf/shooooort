@@ -7,7 +7,7 @@ import {
     GET_CODE_STATS_SUCCESS,
     GET_CODE_STATS_ERROR
 } from "actions/get-code-stats";
-import {SHORTEN_URL_SUCCESS} from "actions/shorten-url";
+import {SHORTEN_URL_SUCCESS, SHORTENED_URL_AGED} from "actions/shorten-url";
 
 import codes from "reducers/codes";
 
@@ -22,6 +22,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -29,6 +30,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             };
@@ -55,6 +57,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             });
@@ -67,6 +70,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -74,6 +78,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             };
@@ -89,6 +94,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: true,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -96,6 +102,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             });
@@ -108,6 +115,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: true,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -115,6 +123,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             };
@@ -135,6 +144,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: {
                         redirectCount: 1,
                         lastSeenDate: "2016-01-31T14:39:50.419Z",
@@ -146,6 +156,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             });
@@ -158,6 +169,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: true,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -165,6 +177,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             };
@@ -181,6 +194,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: new Error("Error message"),
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -188,6 +202,7 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             });
@@ -203,6 +218,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             };
@@ -219,6 +235,7 @@ describe("reducers/codes", () => {
                     url: "url",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 },
                 anotherCodeId: {
@@ -226,6 +243,37 @@ describe("reducers/codes", () => {
                     url: "anotherUrl",
                     fetchingStats: false,
                     errorFetchingStats: null,
+                    newlyCreated: true,
+                    stats: null
+                }
+            });
+        });
+
+        it("case SHORTENED_URL_AGED", () => {
+            const state = {
+                codeId: {
+                    code: "codeId",
+                    url: "url",
+                    fetchingStats: false,
+                    errorFetchingStats: null,
+                    newlyCreated: true,
+                    stats: null
+                }
+            };
+            const action = {
+                type: SHORTENED_URL_AGED,
+                payload: {
+                    code: "codeId",
+                    url: "url"
+                }
+            };
+            expect(codes(state, action)).to.deep.equal({
+                codeId: {
+                    code: "codeId",
+                    url: "url",
+                    fetchingStats: false,
+                    errorFetchingStats: null,
+                    newlyCreated: false,
                     stats: null
                 }
             });

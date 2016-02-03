@@ -23,6 +23,7 @@ describe("components/home", () => {
                 url: "http://url.com",
                 fetchingStats: false,
                 errorFetchingStats: null,
+                newlyCreated: false,
                 stats: null
             }
         };

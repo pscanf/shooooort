@@ -19,7 +19,11 @@ const styleRules = {
 };
 const styles = {
     root: {
-        width: "622px"
+        width: "622px",
+        position: "absolute",
+        top: "100px",
+        left: "calc(50% - 311px)",
+        marginBottom: "100px"
     }
 };
 

@@ -7,7 +7,8 @@ import shortenUrl from "actions/shorten-url";
 import {
     SHORTEN_URL_START,
     SHORTEN_URL_SUCCESS,
-    SHORTEN_URL_ERROR
+    SHORTEN_URL_ERROR,
+    SHORTENED_URL_AGED
 } from "actions/shorten-url";
 import {AxiosError} from "lib/axios";
 
@@ -21,17 +22,11 @@ describe("actions/shorten-url", () => {
         const dispatch = sinon.spy();
         const insert = sinon.spy();
 
-        before(() => {
+        beforeEach(() => {
+            shortenUrl.__Rewire__("AGING_TIME_IN_MS", 0);
             shortenUrl.__Rewire__("axios", axios);
             shortenUrl.__Rewire__("insert", insert);
             sinon.stub(console, "error");
-        });
-        after(() => {
-            shortenUrl.__ResetDependency__("axios");
-            shortenUrl.__ResetDependency__("insert");
-            console.error.restore();
-        });
-        beforeEach(() => {
             axios.post = sinon.stub().returns(resolve({
                 data: {
                     shortcode: "codeId"
@@ -40,6 +35,12 @@ describe("actions/shorten-url", () => {
             dispatch.reset();
             insert.reset();
             console.error.reset();
+        });
+        afterEach(() => {
+            shortenUrl.__ResetDependency__("AGING_TIME_IN_MS");
+            shortenUrl.__ResetDependency__("axios");
+            shortenUrl.__ResetDependency__("insert");
+            console.error.restore();
         });
 
         it("dispatches a SHORTEN_URL_START action right away", async () => {
@@ -75,6 +76,21 @@ describe("actions/shorten-url", () => {
                     url: "url"
                 }
             });
+        });
+
+        it("dispatches a SHORTENED_URL_AGED action AGING_TIME_IN_MS ms after the url has been shortened", async () => {
+            shortenUrl.__Rewire__("AGING_TIME_IN_MS", 200);
+            const start = Date.now();
+            await shortenUrl("url")(dispatch);
+            const end = Date.now();
+            expect(dispatch).to.have.been.calledWith({
+                type: SHORTENED_URL_AGED,
+                payload: {
+                    code: "codeId",
+                    url: "url"
+                }
+            });
+            expect(end - start).to.be.closeTo(200, 20);
         });
 
         it("dispatches a SHORTEN_URL_ERROR action on shorten request error", async () => {

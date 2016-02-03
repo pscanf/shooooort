@@ -44,7 +44,23 @@ const styles = {
         width: "120px"
     },
     codeEntryContainer: {
-        height: "60px"
+        height: "80px"
+    },
+    newlyCreatedHighlightContainer: {
+        position: "relative"
+    },
+    newlyCreatedHighlightBar: {
+        height: "80px",
+        width: "4px",
+        backgroundColor: colors.accent,
+        opacity: 0,
+        transition: "opacity 0.5s",
+        position: "absolute",
+        left: "-20px",
+        top: "-20px"
+    },
+    showHiglight: {
+        opacity: 1
     },
     shortUrlPrefix: {
         fontWeight: 400
@@ -94,6 +110,14 @@ const CodesList = React.createClass({
                 style={styles.codeEntryContainer}
             >
                 <td>
+                    <div style={styles.newlyCreatedHighlightContainer}>
+                        <div
+                            style={[
+                                styles.newlyCreatedHighlightBar,
+                                code.newlyCreated ? styles.showHiglight : null
+                            ]}
+                        />
+                    </div>
                     <div>
                         <span style={styles.shortUrlPrefix}>
                             {"shooooort.com/"}

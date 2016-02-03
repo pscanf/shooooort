@@ -9,6 +9,7 @@ export const Code = t.struct({
     url: URLString,
     fetchingStats: t.Boolean,
     errorFetchingStats: t.maybe(t.Object),
+    newlyCreated: t.Boolean,
     stats: t.maybe(t.struct({
         startDate: ISO8601String,
         lastSeenDate: ISO8601String,

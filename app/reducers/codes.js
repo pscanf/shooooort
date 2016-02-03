@@ -7,7 +7,7 @@ import {
     GET_CODE_STATS_SUCCESS,
     GET_CODE_STATS_ERROR
 } from "actions/get-code-stats";
-import {SHORTEN_URL_SUCCESS} from "actions/shorten-url";
+import {SHORTEN_URL_SUCCESS, SHORTENED_URL_AGED} from "actions/shorten-url";
 
 export default function codes (state = {}, {type, payload, meta}) {
     switch (type) {
@@ -18,6 +18,7 @@ export default function codes (state = {}, {type, payload, meta}) {
             ...code,
             fetchingStats: false,
             errorFetchingStats: null,
+            newlyCreated: false,
             stats: null
         }), payload);
     case GET_CODE_STATS_START:
@@ -57,7 +58,16 @@ export default function codes (state = {}, {type, payload, meta}) {
                 ...payload,
                 fetchingStats: false,
                 errorFetchingStats: null,
+                newlyCreated: true,
                 stats: null
+            }
+        };
+    case SHORTENED_URL_AGED:
+        return {
+            ...state,
+            [payload.code]: {
+                ...state[payload.code],
+                newlyCreated: false
             }
         };
     default:

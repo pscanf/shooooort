@@ -19,6 +19,7 @@ describe("components/codes-list", () => {
                 url: `http://url-${idx}.com`,
                 fetchingStats: false,
                 errorFetchingStats: null,
+                newlyCreated: (idx % 2 === 0),
                 stats: null
             }
         }), {});
@@ -34,6 +35,34 @@ describe("components/codes-list", () => {
             const trs = TestUtils.scryRenderedDOMComponentsWithTag(component, "tr");
             // +1 tr in thead
             expect(trs.length).to.equal(values(codes).length + 1);
+        });
+
+        it("renders a visible highlight bar for newlyCreated codes", () => {
+            TestUtils
+                // Get all td-s
+                .scryRenderedDOMComponentsWithTag(component, "td")
+                // Keep only first child td-s
+                .filter(td => td.previousElementSibling === null)
+                // Keep only those for which newlyCreated === true
+                .filter((td, idx) => idx % 2 === 0)
+                // Test their highlight bar is visible (opacity === 1)
+                .forEach(td => {
+                    expect(td.firstChild.firstChild.style.opacity).to.equal("1");
+                });
+        });
+
+        it("renders a non-visible highlight bar for newlyCreated codes", () => {
+            TestUtils
+                // Get all td-s
+                .scryRenderedDOMComponentsWithTag(component, "td")
+                // Keep only first child td-s
+                .filter(td => td.previousElementSibling === null)
+                // Keep only those for which newlyCreated === false
+                .filter((td, idx) => idx % 2 !== 0)
+                // Test their highlight bar is not visible (opacity === 0)
+                .forEach(td => {
+                    expect(td.firstChild.firstChild.style.opacity).to.equal("0");
+                });
         });
 
     });
