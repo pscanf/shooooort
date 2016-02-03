@@ -1,6 +1,16 @@
 import {expect} from "chai";
 
-import {urlIsValid} from "lib/utils";
+import {timeago, urlIsValid} from "lib/utils";
+
+describe("timeago", () => {
+
+    it("returns `a few seconds ago` when passed null", () => {
+        expect(
+            timeago(null)
+        ).to.equal("a few seconds ago");
+    });
+
+});
 
 describe("urlIsValid", () => {
 

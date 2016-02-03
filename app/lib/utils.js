@@ -2,7 +2,7 @@ import moment from "moment";
 import {isURL} from "validator";
 
 export function timeago (date) {
-    return moment(date).fromNow();
+    return moment(date || undefined).fromNow();
 }
 
 export function urlIsValid (url) {
