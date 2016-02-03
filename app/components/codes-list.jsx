@@ -102,6 +102,12 @@ const CodesList = React.createClass({
     },
 
     renderCodeEntry (code) {
+        const redirectCount = (code.stats && code.stats.redirectCount) || 0;
+        const lastVisit = (
+            redirectCount === 0 ?
+            "Never" :
+            timeago(code.stats && code.stats.lastSeenDate)
+        );
         return (
             <tr
                 className="code-entry"
@@ -142,9 +148,7 @@ const CodesList = React.createClass({
                         error={!!code.errorFetchingStats}
                         loading={code.fetchingStats}
                     >
-                        <span>
-                            {(code.stats && code.stats.redirectCount) || 0}
-                        </span>
+                        <span>{redirectCount}</span>
                     </AsyncResultWrapper>
                 </td>
                 <td style={styles.lastVisitedBodyColumn}>
@@ -152,9 +156,7 @@ const CodesList = React.createClass({
                         error={!!code.errorFetchingStats}
                         loading={code.fetchingStats}
                     >
-                        <span>
-                            {timeago(code.stats && code.stats.lastSeenDate)}
-                        </span>
+                        <span>{lastVisit}</span>
                     </AsyncResultWrapper>
                 </td>
             </tr>
