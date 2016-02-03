@@ -1,7 +1,26 @@
+import Radium, {Style} from "radium";
 import React from "react";
 import {propTypes, t} from "tcomb-react";
 
 import Header from "components/header";
+import Spacer from "components/spacer";
+import colors from "lib/colors";
+
+const styleRules = {
+    root: {
+        body: {
+            fontFamily: "roboto",
+            fontWeight: 300,
+            margin: "0px",
+            color: colors.primaryText
+        }
+    }
+};
+const styles = {
+    root: {
+        width: "622px"
+    }
+};
 
 const Root = React.createClass({
 
@@ -11,8 +30,10 @@ const Root = React.createClass({
 
     render () {
         return (
-            <div>
+            <div style={styles.root}>
+                <Style rules={styleRules.root} />
                 <Header />
+                <Spacer direction="v" size={45} />
                 {this.props.children}
             </div>
         );
@@ -20,4 +41,4 @@ const Root = React.createClass({
 
 });
 
-export default Root;
+export default Radium(Root);

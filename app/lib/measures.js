@@ -4,8 +4,7 @@ const px = ([key, value]) => [`${key}Px`, `${value}px`];
 const convert = pipe(toPairs, map(px), fromPairs);
 
 const measures = {
-    headerHeight: 60,
-    navigationIconSize: 40
+    borderRadius: 3
 };
 
 export default {

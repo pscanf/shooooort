@@ -7,8 +7,28 @@ import dropCodesCollection from "actions/drop-codes-collection";
 import getCodesCollection from "actions/get-codes-collection";
 import shortenUrl from "actions/shorten-url";
 import CodesList from "components/codes-list";
+import Spacer from "components/spacer";
 import UrlForm from "components/url-form";
 import {CodesCollection} from "lib/app-tcomb-types";
+import colors from "lib/colors";
+
+const styles = {
+    listHeadingContainer: {
+        display: "flex",
+        alignItems: "flex-end"
+    },
+    listHeading: {
+        fontSize: "22px"
+    },
+    clearHistoryButton: {
+        border: "0px",
+        backgroundColor: colors.white,
+        color: colors.accent,
+        fontSize: "16px",
+        cursor: "pointer",
+        paddingBottom: "2px"
+    }
+};
 
 const Home = React.createClass({
 
@@ -28,8 +48,20 @@ const Home = React.createClass({
         return (
             <div>
                 <UrlForm onSubmit={shortenUrl} />
-                <h3>{"Previously shortened by you"}</h3>
-                <button onClick={dropCodesCollection}>{"Clear history"}</button>
+                <Spacer direction="v" size={75} />
+                <div style={styles.listHeadingContainer}>
+                    <div style={styles.listHeading}>
+                        {"Previously shortened by you"}
+                    </div>
+                    <Spacer direction="h" size={10} />
+                    <button
+                        onClick={dropCodesCollection}
+                        style={styles.clearHistoryButton}
+                    >
+                        {"Clear history"}
+                    </button>
+                </div>
+                <Spacer direction="v" size={50} />
                 <CodesList codes={codes} />
             </div>
         );

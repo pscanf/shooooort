@@ -3,7 +3,7 @@ import React from "react";
 import {propTypes, t} from "tcomb-react";
 
 import Icon from "components/icon";
-import * as colors from "lib/colors";
+import colors from "lib/colors";
 
 const AsyncResultWrapper = React.createClass({
 
