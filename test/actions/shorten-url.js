@@ -1,5 +1,4 @@
 import axios from "axios";
-import {reject} from "bluebird";
 import chai, {expect} from "chai";
 import nock from "nock";
 import sinon from "sinon";
