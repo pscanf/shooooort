@@ -1,5 +1,6 @@
-import {reject, resolve} from "bluebird";
+import axios from "axios";
 import chai, {expect} from "chai";
+import nock from "nock";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
@@ -9,7 +10,7 @@ import {
     GET_CODE_STATS_SUCCESS,
     GET_CODE_STATS_ERROR
 } from "actions/get-code-stats";
-import {AxiosError} from "lib/axios";
+import axiosLib, {AxiosError} from "lib/axios";
 
 chai.use(sinonChai);
 
@@ -17,20 +18,24 @@ describe("actions/get-code-stats", () => {
 
     describe("getCodeStats", () => {
 
-        const axios = {};
         const dispatch = sinon.spy();
+        const API_URL = "http://shooooort.com";
+        const axiosInstance = axios.create({
+            baseURL: API_URL,
+            timeout: 5000
+        });
 
         before(() => {
-            getCodeStats.__Rewire__("axios", axios);
+            axiosLib.__Rewire__("axiosInstance", axiosInstance);
             sinon.stub(console, "error");
         });
         after(() => {
-            getCodeStats.__ResetDependency__("axios");
+            axiosLib.__ResetDependency__("axiosInstance");
             console.error.restore();
         });
         beforeEach(() => {
+            nock.cleanAll();
             console.error.reset();
-            axios.get = sinon.stub().returns(resolve({}));
             dispatch.reset();
         });
 
@@ -44,20 +49,23 @@ describe("actions/get-code-stats", () => {
         });
 
         it("get stats for the supplied code from the server", async () => {
+            const shooooort = nock("http://shooooort.com")
+                .get("/codeId/stats")
+                .reply(200, {});
             await getCodeStats("codeId")(dispatch);
-            expect(axios.get).to.have.callCount(1);
-            expect(axios.get).to.have.been.calledWith("/codeId/stats");
+            shooooort.done();
         });
 
         it("dispatches a GET_CODE_STATS_SUCCESS action on stats request success", async () => {
-            axios.get = sinon.stub().returns(resolve({
-                data: {
+            const shooooort = nock("http://shooooort.com")
+                .get("/codeId/stats")
+                .reply(200, {
                     redirectCount: 1,
                     lastSeenDate: "2016-01-31T14:39:50.419Z",
                     startDate: "2016-01-31T14:39:45.892Z"
-                }
-            }));
+                });
             await getCodeStats("codeId")(dispatch);
+            shooooort.done();
             expect(dispatch).to.have.been.calledWith({
                 type: GET_CODE_STATS_SUCCESS,
                 payload: {
@@ -71,14 +79,31 @@ describe("actions/get-code-stats", () => {
             });
         });
 
-        it("dispatches a GET_CODE_STATS_ERROR action on stats request error", async () => {
-            axios.get = sinon.stub().returns(reject(
-                new AxiosError()
-            ));
+        it("dispatches a GET_CODE_STATS_ERROR action on stats request error [CASE: http request error]", async () => {
+            const shooooort = nock("http://shooooort.com")
+                .get("/codeId/stats")
+                .replyWithError("Request error");
             await getCodeStats("codeId")(dispatch);
+            shooooort.done();
             expect(dispatch).to.have.been.calledWith({
                 type: GET_CODE_STATS_ERROR,
-                payload: new AxiosError(),
+                payload: sinon.match.instanceOf(AxiosError),
+                error: true,
+                meta: {
+                    code: "codeId"
+                }
+            });
+        });
+
+        it("dispatches a GET_CODE_STATS_ERROR action on stats request error [CASE: http response error]", async () => {
+            const shooooort = nock("http://shooooort.com")
+                .get("/codeId/stats")
+                .reply(400, "Bad request");
+            await getCodeStats("codeId")(dispatch);
+            shooooort.done();
+            expect(dispatch).to.have.been.calledWith({
+                type: GET_CODE_STATS_ERROR,
+                payload: sinon.match.instanceOf(AxiosError),
                 error: true,
                 meta: {
                     code: "codeId"
