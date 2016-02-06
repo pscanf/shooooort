@@ -6,7 +6,7 @@ export function timeago (date) {
 }
 
 export function urlIsValid (url) {
-    return isURL(url, {
+    return !!url && isURL(url, {
         protocols: ["http", "https"],
         require_protocol: true,
         require_valid_protocol: true

@@ -22,7 +22,6 @@
         "react-router-redux",
         "redux",
         "redux-logger",
-        "redux-simple-router",
         "redux-thunk",
         "tcomb-react",
         "validator"
