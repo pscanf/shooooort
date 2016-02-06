@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/pscanf/shooooort.svg?branch=master)](https://travis-ci.org/pscanf/shooooort)
-[![coverage](https://codecov.io/github/pscanf/shooooort/coverage.svg?branch=master)](https://codecov.io/github/pscanf/shooooort?branch=master)
+[![codecov](https://codecov.io/github/pscanf/shooooort/coverage.svg?branch=master)](https://codecov.io/github/pscanf/shooooort?branch=master)
+[![coveralls](https://coveralls.io/repos/github/pscanf/shooooort/badge.svg?branch=master)](https://coveralls.io/github/pscanf/shooooort?branch=master)
 [![dependencies](https://david-dm.org/pscanf/shooooort.svg)](https://david-dm.org/pscanf/shooooort)
 [![devDependencies](https://david-dm.org/pscanf/shooooort/dev-status.svg)](https://david-dm.org/pscanf/shooooort#info=devDependencies)
 
